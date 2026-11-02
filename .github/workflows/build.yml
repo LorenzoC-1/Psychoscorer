@@ -32,7 +32,8 @@ jobs:
 
       - name: Compila in C con Nuitka
         run: |
-          python -m nuitka --standalone --disable-console --enable-plugin=tk-inter --include-data-dir=Database_Test=Database_Test --include-data-file=icona.ico=icona.ico --include-data-file=icona_psyp.ico=icona_psyp.ico --include-data-file=icona_psyt.ico=icona_psyt.ico main.py
+          python -m nuitka --standalone --windows-console-mode=disable --enable-plugin=tk-inter --include-data-dir=Database_Test=Database_Test --include-data-file=icona.ico=icona.ico --include-data-file=icona_psyp.ico=icona_psyp.ico --include-data-file=icona_psyt.ico=icona_psyt.ico --assume-yes-for-downloads main.py
+
 
       - name: Salva il programma compilato
         uses: actions/upload-artifact@v4
