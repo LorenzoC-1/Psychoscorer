@@ -1,0 +1,24 @@
+# Impostazioni di PyCharm
+.idea/
+
+# Ambienti virtuali Python
+.venv/
+__pycache__/
+*.pyc
+
+# Cartelle temporanee di compilazione (PyInstaller e Nuitka)
+_internal/
+build/
+dist/
+main.build/
+main.dist/
+main.onefile-build/
+PsychoscorerC/
+Backup/
+# Ignora i file dei test coperti da copyright
+Database_Test/*.psyt
+Database_Test/*.psyp
+
+# File eseguibili locali
+*.exe
+*.spec

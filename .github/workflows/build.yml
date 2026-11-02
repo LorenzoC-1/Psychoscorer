@@ -1,0 +1,41 @@
+name: Compila PsychoScorer (Win, Mac, Linux)
+
+on:
+  workflow_dispatch: 
+  push:
+    tags:
+      - 'v*' 
+
+jobs:
+  build:
+    name: Compila su ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+
+    steps:
+      - name: Scarica il codice
+        uses: actions/checkout@v4
+
+      - name: Installa Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Installa Librerie e Nuitka
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install nuitka
+
+      - name: Compila in C con Nuitka
+        run: |
+          python -m nuitka --standalone --disable-console --enable-plugin=tk-inter --include-data-dir=Database_Test=Database_Test --include-data-file=icona.ico=icona.ico --include-data-file=icona_psyp.ico=icona_psyp.ico --include-data-file=icona_psyt.ico=icona_psyt.ico main.py
+
+      - name: Salva il programma compilato
+        uses: actions/upload-artifact@v4
+        with:
+          name: PsychoScorer-${{ matrix.os }}
+          path: main.dist/

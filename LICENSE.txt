@@ -1,0 +1,20 @@
+Licenza d'Uso Gratuito (Freeware) - PsychoScorer
+Copyright (c) 2026 Lorenzo Calanca. Tutti i diritti riservati.
+
+1. Usi Consentiti
+Il software PsychoScorer è fornito a titolo gratuito. È esplicitamente autorizzato l'utilizzo del programma per scopi accademici, di ricerca, all'interno di strutture sanitarie pubbliche o private, e nell'esercizio della libera professione clinica.
+
+2. Libera Redistribuzione
+È consentita e incoraggiata la libera ridistribuzione del software originale a titolo gratuito. Chiunque è libero di ospitare, condividere o integrare il programma all'interno dei propri siti web o portali. Pur non essendovi alcun obbligo formale, è raccomandato e gradito l'inserimento di un link o reindirizzamento alla pagina ufficiale del progetto, al fine di garantire agli utenti finali l'accesso alle versioni più aggiornate e sicure.
+
+3. Divieto di Sfruttamento Commerciale
+È severamente vietata la rivendita, l'affitto, la sub-licenza o qualsiasi forma di distribuzione a pagamento del software, del suo codice sorgente o dei pacchetti ad esso associati (.psyt / .psyp). Il programma non può essere clonato, ri-pacchettizzato a scopo di lucro o integrato all'interno di piattaforme commerciali a pagamento senza l'esplicito consenso dell'autore.
+
+4. Copyright e Creazione dei Pacchetti di Test
+La creazione, condivisione e distribuzione di pacchetti di test (.psyt / .psyp) deve avvenire nel rigoroso rispetto del diritto d'autore e della proprietà intellettuale degli editori e degli autori originali degli strumenti psicometrici. L'utente si impegna a digitalizzare e utilizzare nel software esclusivamente i test di cui ha il legittimo possesso (regolare licenza d'uso o manuale originale) o che siano di pubblico dominio (Open Access).
+
+5. Conformità Normativa e Deontologica
+L'utilizzo del software per finalità cliniche, diagnostiche o di ricerca deve avvenire nel rigoroso rispetto delle normative vigenti dello Stato in materia di tutela della salute e privacy, nonché in stretta ottemperanza al Codice Deontologico della professione di appartenenza dell'utente.
+
+6. Declinazione di Responsabilità
+Il software è fornito "così com'è" (AS IS) come mero strumento logico-matematico di supporto. Non si garantisce la correttezza dei risultati calcolati. L'autore non si assume alcuna responsabilità per l'utilizzo che l'utente finale farà del programma, né per eventuali danni diretti o indiretti derivanti dal suo impiego. L'autore declina altresì ogni responsabilità legale, civile e penale per la creazione, diffusione o uso illecito di materiale coperto da copyright tramite questa piattaforma. La verifica dell'esattezza dei punteggi, l'interpretazione dei risultati e l'intera responsabilità clinica e diagnostica (nonché la supervisione del referto) ricadono esclusivamente in capo al professionista utilizzatore.

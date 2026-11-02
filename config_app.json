@@ -1,0 +1,52 @@
+{
+    "logo_path": "",
+    "footer_text": "",
+    "logo_position": "sinistra",
+    "tema": "Dark",
+    "tag_personalizzati": {
+        "QDC": [
+            "Corpo"
+        ],
+        "RFQ-6": [
+            "Mentalizzazione"
+        ],
+        "RFQ-8": [
+            "Mentalizzazione"
+        ],
+        "Tas-20": [
+            "Mentalizzazione"
+        ],
+        "ECR-R": [
+            "Relazioni",
+            "Attaccamento"
+        ],
+        "tasl_v1": [
+            "Lavoro"
+        ],
+        "HAQ": [
+            "Ansia"
+        ],
+        "PID-5-SF-eta-evolutiva": [
+            "Personalità",
+            "DSM-5"
+        ],
+        "FSQ": [
+            "Ansia"
+        ],
+        "MoCA": [
+            "Screening",
+            "Neuropsicologia",
+            "Decadimento Cognitivo"
+        ]
+    },
+    "colori_tag": {
+        "Attaccamento": "#3498DB",
+        "Corpo": "#8E44AD",
+        "Relazioni": "#E84393",
+        "Lavoro": "#2980B9",
+        "Mentalizzazione": "#F39C12",
+        "Ansia": "#E74C3C"
+    },
+    "firma_text": "",
+    "zoom_ui": "100%"
+}
