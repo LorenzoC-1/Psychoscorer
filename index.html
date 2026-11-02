@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PsychoScorer – Scoring per test psicologici e neuropsicologici</title>
+<meta name="description" content="Programma gratuito per correggere test psicologici e neuropsicologici: correzioni per età e scolarità, punteggi equivalenti, cut-off, item critici e referto PDF.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0a1b24;--panel:#0f2833;--line:rgba(234,240,232,.14);--paper:#eaf0e8;--muted:#9bb2ae;--mint:#86d8b8;--amber:#f0b84a;--serif:"Newsreader",Georgia,serif;--sans:"IBM Plex Sans",system-ui,sans-serif;color-scheme:dark}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{font-family:var(--sans);background:var(--ink);color:var(--paper);line-height:1.65;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:radial-gradient(60% 50% at 85% 0%,rgba(134,216,184,.12),transparent 70%),radial-gradient(50% 50% at 0% 100%,rgba(240,184,74,.07),transparent 70%),var(--ink)}
+.bg svg{position:absolute;left:0;width:200%;height:100%;animation:drift 90s linear infinite}
+@keyframes drift{to{transform:translateX(-50%)}}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+
+nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:rgba(10,27,36,.72);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-family:var(--serif);font-size:1.35rem;font-weight:600;text-decoration:none;letter-spacing:-.01em}
+.links{display:flex;gap:26px;align-items:center;font-size:.92rem}
+.links a{color:var(--muted);text-decoration:none;transition:color .2s}
+.links a:hover{color:var(--paper)}
+.links .cta{color:var(--ink);background:var(--mint);padding:8px 16px;border-radius:8px;font-weight:600}
+.links .cta:hover{color:var(--ink);background:#a4e6cd}
+
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:10px;font-weight:600;text-decoration:none;font-size:1rem;transition:transform .2s,background .2s}
+.btn.primary{background:var(--mint);color:var(--ink)}
+.btn.primary:hover{background:#a4e6cd;transform:translateY(-2px)}
+.btn.ghost{border:1px solid var(--line)}
+.btn.ghost:hover{border-color:var(--mint);transform:translateY(-2px)}
+
+.hero{padding:88px 0 96px;display:grid;grid-template-columns:1fr 1.02fr;gap:56px;align-items:center}
+.version{display:inline-block;font-size:.85rem;color:var(--mint);border:1px solid rgba(134,216,184,.35);padding:4px 12px;border-radius:99px;margin-bottom:24px}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(2.5rem,5.2vw,4.1rem);line-height:1.06;letter-spacing:-.02em;margin-bottom:22px}
+.lead{color:var(--muted);font-size:1.12rem;max-width:34em;margin-bottom:34px}
+.actions{display:flex;gap:14px;flex-wrap:wrap}
+.os-note{margin-top:14px;font-size:.85rem;color:var(--muted)}
+
+/* Finestra risultati (riproduzione dell'app) */
+.shot{transform:rotate(1.2deg);transition:transform .4s}
+.shot:hover{transform:rotate(0)}
+.win{background:#ebeded;color:#1d2a30;border-radius:12px;padding:20px 22px 22px;box-shadow:0 40px 70px -30px #000,0 0 0 1px rgba(255,255,255,.08);font-size:.86rem;line-height:1.45}
+.win h4{text-align:center;font-size:1.05rem;margin-bottom:14px}
+.flag{border:1.5px solid #d9483b;background:#fbeae8;border-radius:8px;padding:10px 12px;color:#a32a1f;margin-bottom:16px}
+.flag b{display:block;margin-bottom:2px}
+.dim{margin-bottom:15px}
+.dim strong{display:block}
+.dim small{color:#4a5b62;font-size:.8rem}
+.track{height:7px;background:#cfd6d8;border-radius:4px;margin:6px 0 7px;overflow:hidden}
+.fill{height:100%;width:var(--w);background:#2f6f8a;border-radius:4px;transform-origin:left;animation:grow 1.4s .4s cubic-bezier(.2,.7,.2,1) backwards}
+@keyframes grow{from{transform:scaleX(0)}}
+.chip{display:inline-block;color:#fff;font-weight:600;font-size:.76rem;padding:2px 9px;border-radius:5px;margin-right:5px}
+.o{background:#e67e22}.y{background:#e0b10f}.g{background:#27ae60}
+.pdfbtn{background:#8e44ad;color:#fff;text-align:center;font-weight:600;padding:10px;border-radius:8px;margin-top:6px}
+.cap{margin-top:14px;font-size:.78rem;color:var(--muted);text-align:center}
+
+section{padding:92px 0;border-top:1px solid var(--line)}
+h2{font-family:var(--serif);font-weight:500;font-size:clamp(1.9rem,3.4vw,2.6rem);line-height:1.12;letter-spacing:-.015em;margin-bottom:16px}
+.sub{color:var(--muted);max-width:32em}
+.split{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px}
+.split>div:first-child{position:sticky;top:100px;align-self:start}
+.rows li{list-style:none;padding:24px 0;border-bottom:1px solid var(--line)}
+.rows li:first-child{padding-top:0}
+.rows h3{font-family:var(--serif);font-weight:500;font-size:1.35rem;margin-bottom:6px}
+.rows p{color:var(--muted);max-width:36em}
+
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:56px;position:relative}
+.steps::before{content:"";position:absolute;top:19px;left:0;height:1px;width:100%;background:var(--mint);transform:scaleX(0);transform-origin:left;transition:transform 1.6s cubic-bezier(.2,.7,.2,1)}
+.steps.in::before{transform:scaleX(1)}
+.step .n{width:38px;height:38px;border-radius:50%;background:var(--ink);border:1px solid var(--mint);color:var(--mint);display:grid;place-items:center;font-family:var(--serif);position:relative;margin-bottom:20px}
+.step h3,.cell h3{font-family:var(--serif);font-weight:500;font-size:1.3rem;margin-bottom:6px}
+.step p,.cell p{color:var(--muted);font-size:.97rem}
+
+.quad{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:44px}
+.cell{background:var(--ink);padding:30px 32px}
+
+/* Sezione Etica in fondo */
+.ethics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:44px}
+.ethics-card{background:linear-gradient(180deg,var(--panel),rgba(15,40,51,.55));border:1px solid var(--line);border-radius:16px;padding:32px;display:flex;flex-direction:column;justify-content:space-between;transition:border-color .25s}
+.ethics-card:hover{border-color:rgba(134,216,184,.4)}
+.ethics-card.highlight{border-color:rgba(240,184,74,.4);background:linear-gradient(180deg,rgba(240,184,74,.08),rgba(15,40,51,.6))}
+.ethics-num{font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--mint);margin-bottom:10px;display:block}
+.ethics-card.highlight .ethics-num{color:var(--amber)}
+.ethics-card h3{font-family:var(--serif);font-weight:500;font-size:1.4rem;margin-bottom:10px;color:var(--paper)}
+.ethics-card p{color:var(--muted);font-size:.96rem;line-height:1.6}
+.ethics-card ul{margin-top:12px;padding-left:18px;color:var(--muted);font-size:.93rem}
+.ethics-card li{margin-bottom:6px}
+.ethics-card li::marker{color:var(--mint)}
+.deonto-banner{margin-top:28px;padding:26px 30px;border-radius:14px;border:1px solid rgba(240,184,74,.35);background:rgba(240,184,74,.06);display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start}
+.deonto-icon{width:42px;height:42px;border-radius:10px;background:rgba(240,184,74,.15);color:var(--amber);display:grid;place-items:center;font-weight:700;font-size:1.2rem;flex-shrink:0}
+.deonto-banner h4{font-family:var(--serif);font-size:1.22rem;font-weight:500;color:var(--paper);margin-bottom:6px}
+.deonto-banner p{color:var(--muted);font-size:.95rem}
+
+.five{display:grid;grid-template-columns:repeat(5,1fr);margin-top:44px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.five div{padding:22px 20px;background:var(--panel)}
+.five div+div{border-left:1px solid var(--line)}
+.five b{display:block;font-family:var(--serif);font-weight:500;font-size:1.1rem;margin-bottom:6px}
+.five span{color:var(--muted);font-size:.88rem;line-height:1.5;display:block}
+.note{margin-top:22px;color:var(--muted);max-width:46em}
+
+.two{display:grid;grid-template-columns:1fr 1fr;margin-top:44px;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.two>div{padding:34px}
+.two>div+div{border-left:1px solid var(--line);background:rgba(15,40,51,.55)}
+.two h3{font-family:var(--serif);font-weight:500;font-size:1.45rem;margin-bottom:10px}
+.two p{color:var(--muted)}
+
+.dl{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:34px}
+.alt{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line);font-size:.9rem;align-items:center}
+.alt span{color:var(--muted);width:100%}
+.alt a{padding:7px 14px;border:1px solid var(--line);border-radius:8px;text-decoration:none;transition:border-color .2s}
+.alt a:hover{border-color:var(--mint)}
+.tabs{display:flex;gap:6px;margin:26px 0 18px;border-bottom:1px solid var(--line)}
+.tabs button{background:none;border:0;color:var(--muted);font:inherit;font-weight:500;padding:10px 16px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs button[aria-selected=true]{color:var(--paper);border-color:var(--mint)}
+.panel ol{padding-left:22px;color:var(--muted);max-width:42em}
+.panel li{margin-bottom:12px}
+.panel li::marker{color:var(--mint)}
+.panel b{color:var(--paper);font-weight:500}
+code{background:rgba(0,0,0,.35);padding:2px 7px;border-radius:5px;font-size:.88em;color:var(--paper)}
+
+.lic{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;margin-top:36px}
+.lic li{list-style:none;padding:16px 0;border-top:1px solid var(--line);color:var(--muted)}
+.lic b{color:var(--paper);font-weight:500}
+.warn{margin-top:30px;padding:20px 24px;border-left:3px solid var(--amber);background:rgba(240,184,74,.07);color:var(--paper);max-width:52em;border-radius:0 10px 10px 0}
+
+footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-size:.88rem}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+@media(max-width:860px){
+  .hero,.split,.dl,.two,.steps,.quad,.lic,.ethics-grid{grid-template-columns:1fr}
+  .five{grid-template-columns:1fr 1fr}.five div+div{border-left:0}.five div{border-top:1px solid var(--line)}
+  .hero{padding-top:56px;gap:40px}
+  .shot{transform:none}
+  .split{gap:32px}.split>div:first-child{position:static}
+  .two>div+div{border-left:0;border-top:1px solid var(--line)}
+  .steps::before{display:none}
+  .links a:not(.cta){display:none}
+  .deonto-banner{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  .steps::before{transform:scaleX(1)}
+}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><svg id="waves" viewBox="0 0 2000 800" preserveAspectRatio="none"></svg></div>
+<nav><div class="wrap">
+<a class="logo" href="#top">PsychoScorer</a>
+<div class="links">
+<a href="#come">Funzionamento</a><a href="#funzioni">Caratteristiche</a><a href="#editor">Editor</a><a href="#etica">Etica</a><a href="#download">Download</a>
+<a href="https://github.com/LorenzoC-1/Psychoscorer" target="_blank" rel="noopener">GitHub</a>
+</div></div></nav>
+
+<main id="top">
+<!-- HERO -->
+<div class="wrap hero">
+  <div>
+    <span class="version">Psicologia e Neuropsicologia</span>
+    <h1>Un solo programma per tutti i test psicometrici.</h1>
+    <p class="lead">PsychoScorer corregge i test: tu inserisci le risposte, lui calcola i punteggi, applica le correzioni, segnala i risultati importanti e prepara il referto in PDF.</p>
+    <div class="actions">
+      <a id="main-dl" class="btn primary" href="#download">Scarica PsychoScorer</a>
+      <a class="btn ghost" href="https://github.com/LorenzoC-1/Psychoscorer/blob/main/PsychoScorer%204%20%E2%80%94%20Manuale%20d'uso.pdf" target="_blank" rel="noopener">Leggi il manuale</a>
+    </div>
+    <p class="os-note">Gratuito, freeware per uso clinico e di ricerca. Windows, macOS, Linux.</p>
+  </div>
+
+  <div class="shot" role="img" aria-label="Finestra dei risultati di PsychoScorer con item critico, punteggi, PE e fasce">
+    <div class="win">
+      <h4>Profili Clinici e Punteggi Calcolati</h4>
+      <div class="flag"><b>⚠ Rilevato 1 item critico (Red Flags)</b>Item 5 (Ho evitato di uscire di casa) → Risposta: Sempre (3) [isolamento]</div>
+      <div class="dim"><strong>Memoria verbale</strong><small>Punteggio (somma): 13, corretto a 15.5 / 40</small><div class="track"><div class="fill" style="--w:39%"></div></div><span class="chip o">PE 1 — Ai limiti di norma</span><span class="chip y">Da approfondire</span></div>
+      <div class="dim"><strong>Umore basso</strong><small>Punteggio (somma): 9 / 15</small><div class="track"><div class="fill" style="--w:60%"></div></div><span class="chip y">Da approfondire</span></div>
+      <div class="dim"><strong>Orientamento</strong><small>Punteggio (somma): 10 / 10</small><div class="track"><div class="fill" style="--w:100%"></div></div><span class="chip g">Nella norma</span></div>
+      <div class="pdfbtn">Esporta ed Apri PDF</div>
+    </div>
+    <p class="cap">Finestra dei risultati, con dati di esempio inventati.</p>
+  </div>
+</div>
+
+<!-- FLUSSO IN 3 PASSAGGI IN EVIDENZA -->
+<section id="come">
+  <div class="wrap">
+    <h2>Dalle risposte al referto in tre passaggi</h2>
+    <p class="sub">Il flusso è lo stesso per ogni test, anche per quelli che aggiungi tu.</p>
+    
+    <div class="steps" id="steps">
+      <div class="step"><div class="n">1</div><h3>Compila</h3><p>Scegli il test dalla libreria, inserisci i dati anagrafici (età e scolarità compresi) e le risposte. Si può usare comodamente la tastiera.</p></div>
+      <div class="step"><div class="n">2</div><h3>Calcola</h3><p>Con un clic il programma applica correzioni, PE e fasce cliniche. Se manca un dato anagrafico essenziale, ti dice quale campo completare.</p></div>
+      <div class="step"><div class="n">3</div><h3>Salva il referto</h3><p>Scegli il tipo di grafico per ogni dimensione, aggiungi le osservazioni cliniche e salva il referto PDF pronto per la stampa.</p></div>
+    </div>
+    
+    <div class="quad">
+      <div class="cell"><h3>Si ferma quando non può calcolare</h3><p>Dato mancante, valore non numerico, formula non valida: il programma non produce risultati parziali o dubbi, ma indica il motivo. Gli avvisi su fasce non coperte o PE non calcolabile vanno letti ma non bloccano l'elaborazione.</p></div>
+      <div class="cell"><h3>Le risposte non vengono archiviate</h3><p>PsychoScorer funziona senza connessione e non salva i protocolli della persona: il referto PDF è l'unico documento generato, che tu archivi nei sistemi protetti del tuo servizio.</p></div>
+      <div class="cell"><h3>Prova il test prima di usarlo</h3><p>Il manuale consiglia sempre come verificare un test nuovo con casi calcolati a mano, testando in particolare gli item inversi e i punteggi esattamente sulle soglie di cut-off.</p></div>
+      <div class="cell"><h3>Condividi i test con i colleghi</h3><p>Un test si esporta in un attimo come file <code>.psyt</code>, mentre un insieme di test diventa un pacchetto <code>.psyp</code> facilissimo da scambiare e importare.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FUNZIONI PRINCIPALI -->
+<section id="funzioni">
+  <div class="wrap split">
+    <div><h2>Pensato per psicologi e neuropsicologi</h2><p class="sub">Meno tabelle e calcoli a mano, più tempo per interpretare il risultato del paziente.</p></div>
+    <ul class="rows">
+      <li><h3>Correzioni per età, scolarità e genere</h3><p>Il programma somma o sottrae automaticamente i punti previsti dal manuale del test in base ai dati della persona. Applica le regole una ad una o cumulativamente.</p></li>
+      <li><h3>Punteggio equivalente e cut-off</h3><p>Il PE si ricava con le classiche quattro soglie, uguali per tutti o specifiche per gruppo (es. fasce di età e scolarità). Ad ogni punteggio può essere associata un'etichetta (es. «Nella norma» o «Deficitario») con un colore specifico.</p></li>
+      <li><h3>Item critici in evidenza</h3><p>Se una risposta supera la soglia di allerta clinica (Red Flags), in cima ai risultati e nel referto compare un riquadro con la domanda, la risposta data e una nota interpretativa.</p></li>
+      <li><h3>Referto PDF su carta intestata</h3><p>Logo, firma del professionista con albo e piè di pagina si impostano una volta sola. Per ogni dimensione scegli il grafico visivo (barre, linea, gaussiana) e generi un documento pulito e professionale.</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- EDITOR -->
+<section id="editor">
+  <div class="wrap">
+    <h2>Un editor per aggiungere i tuoi test</h2>
+    <p class="sub">Nessun codice: si compilano cinque schede visuali, semplicemente copiando i dati dal manuale del test.</p>
+    <div class="five">
+      <div><b>Info e PDF</b><span>ID, nome, autore, tag, anagrafica e documenti PDF da allegare (protocollo, manuale, scoring).</span></div>
+      <div><b>Sezioni e item</b><span>Scale Likert, valore numerico diretto, domande Sì/No o a risposta aperta. Impostazione degli item critici.</span></div>
+      <div><b>Dimensioni</b><span>Somma, media o formule matematiche tra dimensioni. Item inversi e impostazioni base per i punteggi equivalenti.</span></div>
+      <div><b>Correzioni</b><span>Tabelle di correzione con condizioni multiple incrociate (es. età e scolarità) e punteggio da sommare/sottrarre.</span></div>
+      <div><b>Cut-off</b><span>Creazione delle fasce cliniche con etichetta, colore, range di punteggio e condizioni per sottogruppo demografico.</span></div>
+    </div>
+    <div class="two">
+      <div><h3>Per chi corregge i test</h3><p>Apri il test dalla libreria, inserisci i dati, leggi punteggi, PE e fasce. La prima parte del manuale è scritta in modo semplice per chiunque utilizzi il software nel quotidiano.</p></div>
+      <div><h3>Per chi inserisce nuovi test</h3><p>La seconda parte del manuale ti accompagna nella digitalizzazione di un test in ogni scheda dell'editor, con un esempio guidato, una checklist e la lista degli avvisi d'errore.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ETICA E DEONTOLOGIA (SPOSTATA IN FONDO, PRIMA DEL DOWNLOAD/LICENZA) -->
+<section id="etica">
+  <div class="wrap">
+    <h2>Etica d'uso e responsabilità clinica</h2>
+    <p class="sub">Strumento informatico di supporto nel rispetto del lavoro clinico e del diritto d'autore.</p>
+
+    <div class="ethics-grid">
+      <div class="ethics-card highlight">
+        <div>
+          <span class="ethics-num">Supervisione Clinica</span>
+          <h3>Strumento di supporto, non diagnostico</h3>
+          <p>PsychoScorer automatizza le operazioni aritmetiche e il confronto sulle tabelle, ma non produce diagnosi automatiche. La verifica dei punteggi e il loro significato clinico restano responsabilità esclusiva del professionista, attestata dalla firma sul referto.</p>
+        </div>
+      </div>
+
+      <div class="ethics-card">
+        <div>
+          <span class="ethics-num">Privacy (GDPR)</span>
+          <h3>100% offline, nessun salvataggio dati</h3>
+          <p>Il software opera interamente sul tuo computer, senza connessione cloud o database pazienti integrato. Terminata la sessione, i dati svaniscono. Il clinico archivia solo il PDF finale secondo le regole del proprio servizio.</p>
+        </div>
+      </div>
+
+      <div class="ethics-card">
+        <div>
+          <span class="ethics-num">Proprietà Intellettuale</span>
+          <h3>Rispetto dei test e diritto d'autore</h3>
+          <p>Il programma fornisce solo il motore di calcolo vuoto. È consentito digitalizzare e condividere come file (<code>.psyt</code>) unicamente gli strumenti psicometrici Open Access o quelli di cui si possiede una legittima licenza d'uso.</p>
+        </div>
+      </div>
+      
+      <div class="ethics-card">
+        <div>
+          <span class="ethics-num">Validazione Strumento</span>
+          <h3>Controlla prima dell'uso</h3>
+          <p>Prima di affidarti a un nuovo test importato per valutare i pazienti, è doveroso verificare il corretto calcolo delle regole inserite nell'editor simulando 2-3 protocolli già corretti a mano.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section id="download">
+  <div class="wrap dl">
+    <div><h2>Scarica PsychoScorer</h2><p class="sub">L’ultima versione è sempre nelle release di GitHub. Non richiede installazione, estrai l'archivio e avvia il programma.</p></div>
+    <div class="box">
+      <a id="dl-btn" class="btn primary" href="https://github.com/LorenzoC-1/Psychoscorer/releases/latest/download/PsychoScorer-Windows.zip" style="width:100%;justify-content:center">Scarica per Windows</a>
+      <p class="os-note" id="dl-label">Rilevato: Windows</p>
+      <div class="alt"><span>Altre versioni</span>
+      <a href="https://github.com/LorenzoC-1/Psychoscorer/releases/latest/download/PsychoScorer-Windows.zip">Windows</a>
+      <a href="https://github.com/LorenzoC-1/Psychoscorer/releases/latest/download/PsychoScorer-Mac.zip">macOS</a>
+      <a href="https://github.com/LorenzoC-1/Psychoscorer/releases/latest/download/PsychoScorer-Linux.zip">Linux</a>
+      <a href="https://github.com/LorenzoC-1/Psychoscorer/blob/main/PsychoScorer%204%20%E2%80%94%20Manuale%20d'uso.pdf" target="_blank" rel="noopener">Manuale PDF</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIMO AVVIO -->
+<section id="guida">
+  <div class="wrap">
+    <h2>Guida al primo avvio</h2>
+    <p class="sub">Il software è gratuito e non ha una firma digitale commerciale, quindi il sistema operativo può mostrare un avviso di protezione al primissimo utilizzo.</p>
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-os="win">Windows</button>
+      <button role="tab" aria-selected="false" data-os="mac">macOS</button>
+      <button role="tab" aria-selected="false" data-os="lin">Linux</button>
+    </div>
+    <div class="panel" id="p-win"><ol>
+      <li>Estrai l’archivio ZIP in una cartella a tua scelta (non avviarlo da dentro la cartella compressa).</li>
+      <li>Fai doppio clic sull’eseguibile (main.exe). Se compare l’avviso blu <em>«Il PC è stato protetto da Windows»</em>, clicca sulla scritta <b>Ulteriori informazioni</b>.</li>
+      <li>Clicca sul pulsante <b>Esegui comunque</b>.</li></ol></div>
+    <div class="panel" id="p-mac" hidden><ol>
+      <li>Estrai lo ZIP e sposta l’applicazione nella cartella <em>Applicazioni</em>.</li>
+      <li>Se macOS segnala che lo sviluppatore non è verificato, chiudi la finestra.</li>
+      <li>Apri le <b>Impostazioni di Sistema</b> e vai nella sezione <b>Privacy e sicurezza</b>.</li>
+      <li>Scorri la pagina fino alla notifica su PsychoScorer e clicca su <b>Apri comunque</b>.</li></ol></div>
+    <div class="panel" id="p-lin" hidden><ol>
+      <li>Estrai il pacchetto ZIP nella cartella desiderata.</li>
+      <li>Apri il terminale in quella cartella.</li>
+      <li>Rendi il file eseguibile digitando <code>chmod +x main</code> (o il nome del binario) e avvialo.</li></ol></div>
+  </div>
+</section>
+
+<!-- LICENZA -->
+<section id="licenza">
+  <div class="wrap">
+    <h2>Licenza d’uso gratuito</h2>
+    <p class="sub">PsychoScorer è freeware: lo puoi usare e condividere gratuitamente, ma non rivendere.</p>
+    <ul class="lic">
+      <li><b>Dove puoi usarlo.</b> In ambito accademico, in strutture sanitarie pubbliche o private e nella libera professione clinica.</li>
+      <li><b>Condivisione libera.</b> Puoi ridistribuirlo gratuitamente. Un link a questa pagina è gradito, per far arrivare agli utenti sempre le versioni aggiornate.</li>
+      <li><b>Niente uso commerciale.</b> Sono vietate rivendita, affitto, sub-licenza e distribuzione a pagamento del software e dei pacchetti <code>.psyt</code> / <code>.psyp</code>.</li>
+    </ul>
+    <p class="warn">Il programma è fornito come mero strumento di supporto, «così com’è». L'autore non si assume responsabilità per l'uso clinico dei calcoli. Il testo legale completo e vincolante è nel file <a href="https://github.com/LorenzoC-1/Psychoscorer/blob/main/LICENSE.txt" target="_blank" rel="noopener">LICENSE.txt</a>.</p>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">
+<span>© 2026 Lorenzo Calanca. Tutti i diritti riservati. Software freeware per uso clinico e di ricerca.</span>
+<a href="https://github.com/LorenzoC-1/Psychoscorer" target="_blank" rel="noopener">Progetto Open Source su GitHub</a>
+</div></footer>
+
+<script>
+const $=id=>document.getElementById(id);
+const REL="https://github.com/LorenzoC-1/Psychoscorer/releases/latest/download/";
+(function(){let h="";for(let k=0;k<6;k++){let d="",y=160+k*110,a=26+k*7,f=.0075-k*.0008;
+for(let x=0;x<=2000;x+=20)d+=(d?"L":"M")+x+" "+(y+Math.sin(x*f*Math.PI+k)*a).toFixed(1);
+h+=`<path d="${d}" fill="none" stroke="rgba(134,216,184,${.1-k*.012})" stroke-width="1.2"/>`}
+$("waves").innerHTML=h})();
+new IntersectionObserver((e,o)=>{if(e[0].isIntersecting){$("steps").classList.add("in");o.disconnect()}},{threshold:.4}).observe($("steps"));
+function tab(os){document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.os===os));
+["win","mac","lin"].forEach(k=>$("p-"+k).hidden=k!==os)}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>tab(b.dataset.os));
+const ua=navigator.userAgent.toLowerCase(),mobile=/android|iphone|ipad/.test(ua);
+let os="win",name="Windows";
+if(!mobile&&ua.includes("mac")){os="mac";name="macOS"}
+else if(!mobile&&ua.includes("linux")){os="lin";name="Linux"}
+const url=REL+{win:"PsychoScorer-Windows.zip",mac:"PsychoScorer-Mac.zip",lin:"PsychoScorer-Linux.zip"}[os];
+if(mobile){$("dl-label").textContent="PsychoScorer è un’app desktop: aprilo da Windows, macOS o Linux."}
+else{$("dl-btn").href=url;$("dl-btn").textContent="Scarica per "+name;$("dl-label").textContent="Rilevato: "+name;
+$("main-dl").href=url;$("main-dl").textContent="Scarica per "+name;tab(os)}
+</script>
+</body>
+</html>
